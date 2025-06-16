@@ -1,0 +1,8 @@
+.idea/
+.vscode/
+
+# 二进制文件
+server
+
+# 日志文件
+logs/
