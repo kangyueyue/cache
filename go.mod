@@ -1,4 +1,4 @@
-module gitee.com/messizuo/kama-cache-go
+module github.com/zuozikang/cache
 
 go 1.24.0
 
