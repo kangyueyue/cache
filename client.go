@@ -3,8 +3,8 @@ package kamacache
 import (
 	"context"
 	"fmt"
-	"gitee.com/messizuo/kama-cache-go/pb"
-	re "gitee.com/messizuo/kama-cache-go/retry"
+	"github.com/zuozikang/cache/pb"
+	re "github.com/zuozikang/cache/retry"
 	"github.com/avast/retry-go"
 	"github.com/sirupsen/logrus"
 	clientv3 "go.etcd.io/etcd/client/v3"

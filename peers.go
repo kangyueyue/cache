@@ -3,9 +3,9 @@ package kamacache
 import (
 	"context"
 	"fmt"
-	"gitee.com/messizuo/kama-cache-go/consistenthash"
-	"gitee.com/messizuo/kama-cache-go/consts"
-	"gitee.com/messizuo/kama-cache-go/registry"
+	"github.com/zuozikang/cache/consistenthash"
+	"github.com/zuozikang/cache/consts"
+	"github.com/zuozikang/cache/registry"
 	"github.com/sirupsen/logrus"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"

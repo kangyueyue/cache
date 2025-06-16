@@ -2,7 +2,7 @@ package kamacache
 
 import (
 	"context"
-	"gitee.com/messizuo/kama-cache-go/store"
+	"github.com/zuozikang/cache/store"
 	"github.com/sirupsen/logrus"
 	"sync"
 	"sync/atomic"
