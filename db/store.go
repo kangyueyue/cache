@@ -14,11 +14,12 @@ var globalDB *gorm.DB
 func InitDB() error {
 	//cfg := NewDBConfig("113.45.6.12", "13306", "root", "Zzk258821781", "zuo_cache")
 	var err error
-	cfg, err := NewDBConfigByToml("./db.conf")
+	cfg, err := NewDBConfigByToml("./db/db.conf")
 	if err != nil {
 		return err
 	}
 	dsn := cfg.GetDSN()
+	logrus.Infof("dsn:%s", dsn)
 	globalDB, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,   // string 类型字段的默认长度

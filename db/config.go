@@ -1,27 +1,28 @@
 package db
 
 import (
-	"github.com/BurntSushi/toml"
 	"os"
+
+	"github.com/BurntSushi/toml"
 )
 
 // DBConfig 配置
 type DBConfig struct {
-	host     string `toml:"host"`
-	port     string `toml:"port"`
-	user     string `toml:"user"`
-	password string `toml:"password"`
-	dbName   string `toml:"dbName"`
+	Host     string `toml:"host"`
+	Port     string `toml:"port"`
+	User     string `toml:"user"`
+	Password string `toml:"password"`
+	DbName   string `toml:"dbName"`
 }
 
 // NewDBConfig 创建配置
 func NewDBConfig(host, port, user, password, dbName string) *DBConfig {
 	return &DBConfig{
-		host:     host,
-		port:     port,
-		user:     user,
-		password: password,
-		dbName:   dbName,
+		Host:     host,
+		Port:     port,
+		User:     user,
+		Password: password,
+		DbName:   dbName,
 	}
 }
 
@@ -41,5 +42,5 @@ func NewDBConfigByToml(path string) (*DBConfig, error) {
 }
 
 func (c *DBConfig) GetDSN() string {
-	return c.user + ":" + c.password + "@tcp(" + c.host + ":" + c.port + ")/" + c.dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
+	return c.User + ":" + c.Password + "@tcp(" + c.Host + ":" + c.Port + ")/" + c.DbName + "?charset=utf8mb4&parseTime=True&loc=Local"
 }
