@@ -1,3 +1,7 @@
+format:
+	goimports -w .
+	@echo "Running format..."
+
 test_store:
 	@echo "Running test_store..."
 	cd store && go test -v -cover

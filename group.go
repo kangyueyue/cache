@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/zuozikang/cache/consts"
-	"github.com/zuozikang/cache/singleflight"
-	"github.com/sirupsen/logrus"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/zuozikang/cache/consts"
+	"github.com/zuozikang/cache/singleflight"
 )
 
 // 全局缓存组件

@@ -2,11 +2,12 @@ package kamacache
 
 import (
 	"context"
-	"github.com/zuozikang/cache/store"
-	"github.com/sirupsen/logrus"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/zuozikang/cache/store"
 )
 
 // Cache 是对底层缓存存储的封装

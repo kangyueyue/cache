@@ -3,15 +3,16 @@ package kamacache
 import (
 	"context"
 	"fmt"
-	"github.com/zuozikang/cache/consistenthash"
-	"github.com/zuozikang/cache/consts"
-	"github.com/zuozikang/cache/registry"
-	"github.com/sirupsen/logrus"
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"log"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/zuozikang/cache/consistenthash"
+	"github.com/zuozikang/cache/consts"
+	"github.com/zuozikang/cache/registry"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // PeerPicker 定义了peer选择器的接口

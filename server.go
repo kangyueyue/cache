@@ -4,18 +4,19 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"net"
+	"sync"
+	"time"
+
+	"github.com/sirupsen/logrus"
 	"github.com/zuozikang/cache/consts"
 	"github.com/zuozikang/cache/pb"
 	"github.com/zuozikang/cache/registry"
-	"github.com/sirupsen/logrus"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
-	"net"
-	"sync"
-	"time"
 )
 
 // Server 定义缓存服务器

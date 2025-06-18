@@ -2,10 +2,11 @@ package log
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"path"
 	"runtime"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 // InitLog 初始化日志

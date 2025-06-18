@@ -3,14 +3,15 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
 	lcache "github.com/zuozikang/cache"
 	"github.com/zuozikang/cache/consts"
 	"github.com/zuozikang/cache/db"
 	logs "github.com/zuozikang/cache/logurs"
-	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
-	"os"
-	"time"
 )
 
 func main() {

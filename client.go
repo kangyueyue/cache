@@ -3,14 +3,15 @@ package kamacache
 import (
 	"context"
 	"fmt"
-	"github.com/zuozikang/cache/pb"
-	re "github.com/zuozikang/cache/retry"
+	"time"
+
 	"github.com/avast/retry-go"
 	"github.com/sirupsen/logrus"
+	"github.com/zuozikang/cache/pb"
+	re "github.com/zuozikang/cache/retry"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"time"
 )
 
 // Client 定义了缓存客户端接口，实现Peer接口

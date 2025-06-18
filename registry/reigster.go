@@ -3,10 +3,11 @@ package registry
 import (
 	"context"
 	"fmt"
-	"github.com/sirupsen/logrus"
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"net"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // Config 服务配置

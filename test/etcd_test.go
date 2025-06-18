@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 func TestEtcdConnect(t *testing.T) {
