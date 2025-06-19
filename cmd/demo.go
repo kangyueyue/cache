@@ -1,5 +1,5 @@
 package main
 
-// func main() {
-// 	// demo测试
-// }
+func main() {
+	// demo测试
+}

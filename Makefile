@@ -1,6 +1,12 @@
+.PHONY: format,wire,test_store,test_etcd,run_demo,run_A,run_B,run_C,run-default,tidy
+
 format:
 	goimports -w .
-	@echo "Running format..."
+	@echo "go format successfully..."
+
+wire:
+	cd cmd/app && wire
+	@echo "wire successfully..."
 
 test_store:
 	@echo "Running test_store..."

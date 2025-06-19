@@ -35,12 +35,13 @@ func NewDBConfigByToml(path string) (*DBConfig, error) {
 
 	// 解析Toml
 	var config DBConfig
-	if _, err := toml.Decode(string(data), &config); err != nil {
+	if _, err = toml.Decode(string(data), &config); err != nil {
 		return nil, err
 	}
 	return &config, nil
 }
 
+// GetDSN 获取DSN
 func (c *DBConfig) GetDSN() string {
 	return c.User + ":" + c.Password + "@tcp(" + c.Host + ":" + c.Port + ")/" + c.DbName + "?charset=utf8mb4&parseTime=True&loc=Local"
 }
