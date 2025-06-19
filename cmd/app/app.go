@@ -3,8 +3,9 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"time"
+
+	"github.com/sirupsen/logrus"
 
 	"github.com/urfave/cli/v2"
 	lcache "github.com/zuozikang/cache"
@@ -13,16 +14,16 @@ import (
 
 // App 应用
 type App struct {
-	addr   string               // 地址
-	server *lcache.Server       // 服务
-	picker *lcache.ClientPicker // 节点选择器
-	group  *lcache.Group        // 分组
-	log    *logrus.Logger       // 日志
+	addr   string            // 地址
+	server *lcache.Server    // 服务
+	picker lcache.PeerPicker // 节点选择器
+	group  *lcache.Group     // 分组
+	log    *logrus.Logger    // 日志
 }
 
 // NewApp 创建应用
 func NewApp(server *lcache.Server,
-	picker *lcache.ClientPicker,
+	picker lcache.PeerPicker,
 	group *lcache.Group,
 ) *App {
 	return &App{

@@ -8,6 +8,7 @@ package app
 
 import (
 	"github.com/google/wire"
+	kamacache "github.com/zuozikang/cache"
 )
 
 // Injectors from wire.go:
@@ -18,7 +19,8 @@ func InitializeApp(addr string) (*App, error) {
 	if err != nil {
 		return nil, err
 	}
-	clientPicker, err := ProvidePicker(addr)
+	v := kamacache.DefaultPickerOptions()
+	clientPicker, err := kamacache.NewClientPicker(addr, v...)
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +34,12 @@ func InitializeApp(addr string) (*App, error) {
 // AppSet 依赖
 var AppSet = wire.NewSet(
 	NewApp,
+)
+
+// 绑定接口和实现类
+var PickerSet = wire.NewSet(kamacache.NewClientPicker, kamacache.DefaultPickerOptions, wire.Bind(new(kamacache.PeerPicker), new(*kamacache.ClientPicker)))
+
+var ProviderSet = wire.NewSet(
 	ProvideServer,
-	ProvidePicker,
-	ProvideGroup)
+	ProvideGroup,
+)

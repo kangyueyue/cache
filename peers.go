@@ -18,6 +18,7 @@ import (
 // PeerPicker 定义了peer选择器的接口
 type PeerPicker interface {
 	PickPeer(key string) (peer Peer, ok, self bool) // 选择器
+	PrintPeers()                                    // 打印当前已发现的节点
 	Close() error
 }
 
@@ -43,6 +44,11 @@ type ClientPicker struct {
 
 // PickerOption 缓存客户端的配置项
 type PickerOption func(*ClientPicker)
+
+// DefaultPickerOptions 默认选项
+func DefaultPickerOptions() []PickerOption {
+	return []PickerOption{}
+}
 
 // WithServiceName 设置服务名
 func WithServiceName(name string) PickerOption {
