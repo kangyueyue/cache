@@ -1,7 +1,10 @@
 package db
 
 import (
+	"fmt"
 	"os"
+
+	"github.com/spf13/viper"
 
 	"github.com/BurntSushi/toml"
 )
@@ -16,14 +19,24 @@ type DBConfig struct {
 }
 
 // NewDBConfig 创建配置
-func NewDBConfig(host, port, user, password, dbName string) *DBConfig {
+func NewDBConfig() (*DBConfig, error) {
+	// 从viper中读取配置
+	host := viper.GetString("mysql.host")
+	port := viper.GetString("mysql.port")
+	user := viper.GetString("mysql.user")
+	password := viper.GetString("mysql.password")
+	dbName := viper.GetString("mysql.dbName")
+
+	if host == "" || port == "" || user == "" || password == "" || dbName == "" {
+		return nil, fmt.Errorf("mysql config is empty")
+	}
 	return &DBConfig{
 		Host:     host,
 		Port:     port,
 		User:     user,
 		Password: password,
 		DbName:   dbName,
-	}
+	}, nil
 }
 
 // NewDBConfigByToml 通过toml配置创建配置

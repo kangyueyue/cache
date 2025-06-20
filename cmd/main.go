@@ -10,11 +10,9 @@ import (
 
 	"github.com/urfave/cli/v2"
 	"github.com/zuozikang/cache/cmd/app"
-	logs "github.com/zuozikang/cache/logurs"
 )
 
 func main() {
-	logs.InitLog()
 	appCmd := &cli.App{
 		Name:  "zuo-cache",
 		Usage: "KamaCache-go-zuo",
@@ -44,12 +42,10 @@ func run(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	// 异步启动服务
-	go func() {
-		if err = cacheApp.Server(c); err != nil {
-			panic(err)
-		}
-	}()
+	// 启动服务
+	if err = cacheApp.Server(c); err != nil {
+		panic(err)
+	}
 	// 关闭资源
 	defer func() {
 		err = cacheApp.Close()

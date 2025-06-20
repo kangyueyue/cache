@@ -21,5 +21,4 @@ func InitLog() {
 		},
 	})
 	logrus.Infof("log init finish.......")
-
 }

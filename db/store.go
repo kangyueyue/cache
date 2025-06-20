@@ -13,9 +13,8 @@ var globalDB *gorm.DB
 
 // InitDB 初始化数据库连接
 func InitDB() error {
-	//cfg := NewDBConfig("113.45.6.12", "13306", "root", "Zzk258821781", "zuo_cache")
 	var err error
-	cfg, err := NewDBConfigByToml("./db/db.conf")
+	cfg, err := NewDBConfig()
 	if err != nil {
 		return err
 	}
