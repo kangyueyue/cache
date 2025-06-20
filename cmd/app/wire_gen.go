@@ -8,6 +8,7 @@ package app
 
 import (
 	"github.com/google/wire"
+	"github.com/nacos-group/nacos-sdk-go/clients"
 	kamacache "github.com/zuozikang/cache"
 )
 
@@ -25,7 +26,19 @@ func InitializeApp(addr string) (*App, error) {
 		return nil, err
 	}
 	group := ProvideGroup()
-	app := NewApp(server, clientPicker, group)
+	config, err := NewConfig()
+	if err != nil {
+		return nil, err
+	}
+	nacosClientParam, err := ProvideNacosClientParam(config)
+	if err != nil {
+		return nil, err
+	}
+	iConfigClient, err := clients.NewConfigClient(nacosClientParam)
+	if err != nil {
+		return nil, err
+	}
+	app := NewApp(server, clientPicker, group, iConfigClient)
 	return app, nil
 }
 
@@ -39,7 +52,13 @@ var AppSet = wire.NewSet(
 // 绑定接口和实现类
 var PickerSet = wire.NewSet(kamacache.NewClientPicker, kamacache.DefaultPickerOptions, wire.Bind(new(kamacache.PeerPicker), new(*kamacache.ClientPicker)))
 
+// ProviderSet 依赖
 var ProviderSet = wire.NewSet(
 	ProvideServer,
 	ProvideGroup,
+)
+
+// nacosClientSet 依赖
+var nacosClientSet = wire.NewSet(
+	ProvideNacosClientParam, clients.NewConfigClient,
 )

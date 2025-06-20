@@ -10,9 +10,11 @@ import (
 
 	"github.com/urfave/cli/v2"
 	"github.com/zuozikang/cache/cmd/app"
+	logs "github.com/zuozikang/cache/logurs"
 )
 
 func main() {
+	logs.InitLog() // 初始化日志
 	appCmd := &cli.App{
 		Name:  "zuo-cache",
 		Usage: "KamaCache-go-zuo",

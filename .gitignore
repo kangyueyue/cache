@@ -6,3 +6,6 @@ server
 
 # 日志文件
 logs/
+
+# nacos文件
+tmp/*

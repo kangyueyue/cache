@@ -5,41 +5,42 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/spf13/viper"
+	"github.com/nacos-group/nacos-sdk-go/clients/config_client"
 
 	"github.com/sirupsen/logrus"
 
 	"github.com/urfave/cli/v2"
 	lcache "github.com/zuozikang/cache"
 	"github.com/zuozikang/cache/db"
-	logs "github.com/zuozikang/cache/logurs"
 )
 
 // App 应用
 type App struct {
-	addr   string            // 地址
-	server *lcache.Server    // 服务
-	picker lcache.PeerPicker // 节点选择器
-	group  *lcache.Group     // 分组
+	addr        string                      // 地址
+	server      *lcache.Server              // 服务
+	picker      lcache.PeerPicker           // 节点选择器
+	group       *lcache.Group               // 分组
+	nacosClient config_client.IConfigClient // nacos客户端
 }
 
 // NewApp 创建应用
 func NewApp(server *lcache.Server,
 	picker lcache.PeerPicker,
 	group *lcache.Group,
+	nacosClient config_client.IConfigClient,
 ) *App {
 	return &App{
-		server: server,
-		picker: picker,
-		group:  group,
+		server:      server,
+		picker:      picker,
+		group:       group,
+		nacosClient: nacosClient,
 	}
 }
 
 // Server 启动
 func (a *App) Server(c *cli.Context) error {
-	logs.InitLog() // 初始化日志
-	// 初始化配置文件
-	a.InitConf()
+	// 初始化Nacos
+	a.InitNacos()
 
 	port := c.Int("port")
 	nodeId := c.String("node")
@@ -184,15 +185,4 @@ func (a *App) getOtherCache(ctx context.Context, localKey, nodeId string) error 
 		}
 	}
 	return nil
-}
-
-// InitConf 初始化配置
-func (a *App) InitConf() {
-	viper.SetConfigName("config.yml")
-	viper.SetConfigType("yml")
-	viper.AddConfigPath(".")
-	if err := viper.ReadInConfig(); err != nil {
-		logrus.Fatalf("读取配置文件失败: %v", err)
-		panic(err)
-	}
 }

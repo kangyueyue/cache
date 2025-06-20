@@ -4,6 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/nacos-group/nacos-sdk-go/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/vo"
+
 	lcache "github.com/zuozikang/cache"
 	"github.com/zuozikang/cache/consts"
 	"github.com/zuozikang/cache/db"
@@ -16,11 +19,6 @@ func ProvideServer(addr string) (*lcache.Server, error) {
 		lcache.WithDialTimeout(5*time.Second))
 }
 
-// ProvidePicker wire
-func ProvidePicker(addr string) (*lcache.ClientPicker, error) {
-	return lcache.NewClientPicker(addr)
-}
-
 // ProvideGroup wire
 func ProvideGroup() *lcache.Group {
 	return lcache.NewGroup("test", 2<<20, lcache.GetterFunc(
@@ -28,4 +26,29 @@ func ProvideGroup() *lcache.Group {
 			return db.Get(context.Background(), key)
 		}),
 	)
+}
+
+// ProvideNacosClientParam wire
+func ProvideNacosClientParam(config *Config) (vo.NacosClientParam, error) {
+	// 构建ServerConfig
+	sc := []constant.ServerConfig{{
+		IpAddr: config.NacosServer.IpAddr,
+		Port:   config.NacosServer.Port,
+		Scheme: config.NacosServer.Scheme,
+	}}
+
+	// 构建ClientConfig
+	cc := constant.ClientConfig{
+		NamespaceId:         config.NacosClient.NamespaceId,
+		TimeoutMs:           config.NacosClient.TimeoutMs,
+		NotLoadCacheAtStart: config.NacosClient.NotLoadCacheAtStart,
+		LogDir:              config.NacosClient.LogDir,
+		CacheDir:            config.NacosClient.CacheDir,
+		LogLevel:            config.NacosClient.LogLevel,
+	}
+
+	return vo.NacosClientParam{
+		ClientConfig:  &cc,
+		ServerConfigs: sc,
+	}, nil
 }
