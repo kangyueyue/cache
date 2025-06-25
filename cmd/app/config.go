@@ -1,6 +1,8 @@
 package app
 
 import (
+	"github.com/redis/go-redis/v9"
+	"github.com/zuozikang/cache/db"
 	"os"
 
 	"github.com/BurntSushi/toml"
@@ -8,8 +10,10 @@ import (
 
 // Config nacos配置
 type Config struct {
-	NacosServer *NacosServer `toml:"nacos_server"` // nacos服务端配置
-	NacosClient *NacosClient `toml:"nacos_client"` // nacos客户端配置
+	NacosServer *NacosServer   `toml:"nacos_server"` // nacos服务端配置
+	NacosClient *NacosClient   `toml:"nacos_client"` // nacos客户端配置
+	DbConfig    *db.DBConfig   `toml:"db-config"`    // 数据库配置
+	RedisConfig *redis.Options `toml:"redis-config"` // redis配置
 }
 
 // NacosServer nacos服务端配置
