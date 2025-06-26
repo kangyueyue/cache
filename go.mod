@@ -1,6 +1,6 @@
 module github.com/zuozikang/cache
 
-go 1.24.0
+go 1.24.1
 
 require (
 	github.com/BurntSushi/toml v1.5.0
@@ -39,6 +39,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/json-iterator/go v1.1.6 // indirect
+	github.com/kangyueyue/road v0.0.0-20250626104414-18ce808aafac // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
