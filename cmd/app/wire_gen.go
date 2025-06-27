@@ -25,7 +25,11 @@ func InitializeApp(addr int, f string) (*App, error) {
 	if err != nil {
 		return nil, err
 	}
-	config, err := NewConfig()
+	roadRoad, err := road.InitRoad(f)
+	if err != nil {
+		return nil, err
+	}
+	config, err := NewConfig(roadRoad)
 	if err != nil {
 		return nil, err
 	}
@@ -34,10 +38,6 @@ func InitializeApp(addr int, f string) (*App, error) {
 		return nil, err
 	}
 	group := ProvideGroup(store)
-	roadRoad, err := road.InitRoad(f)
-	if err != nil {
-		return nil, err
-	}
 	client := ProvideRedisClient(config)
 	app := NewApp(server, clientPicker, group, roadRoad, config, client, store)
 	return app, nil
@@ -46,9 +46,7 @@ func InitializeApp(addr int, f string) (*App, error) {
 // wire.go:
 
 // AppSet 依赖
-var AppSet = wire.NewSet(
-	NewApp, road.InitRoad,
-)
+var AppSet = wire.NewSet(NewApp, road.InitRoad, NewConfig)
 
 // 绑定接口和实现类
 var PickerSet = wire.NewSet(kamacache.NewClientPicker, kamacache.DefaultPickerOptions, wire.Bind(new(kamacache.PeerPicker), new(*kamacache.ClientPicker)))

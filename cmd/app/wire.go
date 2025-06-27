@@ -12,9 +12,9 @@ import (
 )
 
 // AppSet 依赖
-var AppSet = wire.NewSet(
-	NewApp,
+var AppSet = wire.NewSet(NewApp,
 	road.InitRoad,
+	NewConfig,
 )
 
 // 绑定接口和实现类
@@ -39,7 +39,6 @@ var DBComponents = wire.NewSet(
 func InitializeApp(addr int, f string) (*App, error) {
 	wire.Build(
 		AppSet,
-		NewConfig,
 		PickerSet,
 		ProviderSet,
 		DBComponents,
