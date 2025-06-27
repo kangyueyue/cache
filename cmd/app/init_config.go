@@ -9,7 +9,6 @@ import (
 func DefaultConfig() *Config {
 	return &Config{
 		&db.DBConfig{},
-		&redis.Options{
-		},
+		&redis.Options{},
 	}
 }

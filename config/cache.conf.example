@@ -1,0 +1,11 @@
+[base_config]
+group = ""
+
+[nacos_server]
+ip_addr = ""
+port =
+
+[nacos_client]
+namespace_id = ""
+
+

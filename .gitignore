@@ -9,3 +9,6 @@ logs/
 
 # nacos文件
 tmp/*
+
+# 配置文件
+config/cache.conf

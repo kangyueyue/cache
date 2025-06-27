@@ -9,7 +9,7 @@ package app
 import (
 	"github.com/google/wire"
 	"github.com/kangyueyue/road"
-	"github.com/zuozikang/cache"
+	kamacache "github.com/zuozikang/cache"
 )
 
 // Injectors from wire.go:

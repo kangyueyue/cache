@@ -1,5 +1,8 @@
 .PHONY: format,wire,test_store,test_etcd,run_demo,run_A,run_B,run_C,run-default,tidy
 
+road:
+	go get -u github.com/kangyueyue/road@v1.0.0
+
 format:
 	goimports -w .
 	@echo "go format successfully..."
