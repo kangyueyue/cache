@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nacos-group/nacos-sdk-go/clients/config_client"
+	"github.com/kangyueyue/road"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/sirupsen/logrus"
 
@@ -16,45 +17,44 @@ import (
 
 // App 应用
 type App struct {
-	addr        string                      // 地址
-	server      *lcache.Server              // 服务
-	picker      lcache.PeerPicker           // 节点选择器
-	group       *lcache.Group               // 分组
-	nacosClient config_client.IConfigClient // nacos客户端
+	road   *road.Road        // nacos配置
+	cfg    *Config           // 配置
+	store  *db.Store         // db
+	redis  *redis.Client     // redis
+	server *lcache.Server    // 服务
+	picker lcache.PeerPicker // 节点选择器
+	group  *lcache.Group     // 分组
 }
 
 // NewApp 创建应用
 func NewApp(server *lcache.Server,
 	picker lcache.PeerPicker,
 	group *lcache.Group,
-	nacosClient config_client.IConfigClient,
+	road *road.Road,
+	cfg *Config,
+	redis *redis.Client,
+	db *db.Store,
 ) *App {
 	return &App{
-		server:      server,
-		picker:      picker,
-		group:       group,
-		nacosClient: nacosClient,
+		server: server,
+		picker: picker,
+		group:  group,
+		road:   road,
+		cfg:    cfg,
+		redis:  redis,
+		store:  db,
 	}
 }
 
 // Server 启动
 func (a *App) Server(c *cli.Context) error {
-	// 初始化Nacos
-	a.InitNacos()
-
 	port := c.Int("port")
 	nodeId := c.String("node")
 
 	addr := fmt.Sprintf(":%d", port)
 	logrus.Infof("[节点%s] 启动，地址: %s", nodeId, addr)
 
-	// Init db
-	err := db.InitDB()
-	if err != nil {
-		logrus.Errorf("InitDB err: %v", err)
-		return err
-	}
-
+	var err error
 	// 注册节点选择器
 	a.group.RegisterPeers(a.picker)
 
@@ -112,7 +112,7 @@ func (a *App) logic(nodeId string) error {
 	}
 
 	logrus.Infof("\n=== 节点%s：设置db数据 ===\n", nodeId)
-	err = db.Set(ctx, localKey, DbValue)
+	err = a.store.Set(ctx, localKey, DbValue)
 	if err != nil {
 		logrus.Fatal("设置db数据失败:", err)
 	}

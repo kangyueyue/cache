@@ -8,14 +8,14 @@ package app
 
 import (
 	"github.com/google/wire"
-	"github.com/nacos-group/nacos-sdk-go/clients"
-	kamacache "github.com/zuozikang/cache"
+	"github.com/kangyueyue/road"
+	"github.com/zuozikang/cache"
 )
 
 // Injectors from wire.go:
 
 // InitializeApp 初始化
-func InitializeApp(addr string) (*App, error) {
+func InitializeApp(addr int, f string) (*App, error) {
 	server, err := ProvideServer(addr)
 	if err != nil {
 		return nil, err
@@ -25,20 +25,21 @@ func InitializeApp(addr string) (*App, error) {
 	if err != nil {
 		return nil, err
 	}
-	group := ProvideGroup()
 	config, err := NewConfig()
 	if err != nil {
 		return nil, err
 	}
-	nacosClientParam, err := ProvideNacosClientParam(config)
+	store, err := ProvideStore(config)
 	if err != nil {
 		return nil, err
 	}
-	iConfigClient, err := clients.NewConfigClient(nacosClientParam)
+	group := ProvideGroup(store)
+	roadRoad, err := road.InitRoad(f)
 	if err != nil {
 		return nil, err
 	}
-	app := NewApp(server, clientPicker, group, iConfigClient)
+	client := ProvideRedisClient(config)
+	app := NewApp(server, clientPicker, group, roadRoad, config, client, store)
 	return app, nil
 }
 
@@ -46,7 +47,7 @@ func InitializeApp(addr string) (*App, error) {
 
 // AppSet 依赖
 var AppSet = wire.NewSet(
-	NewApp,
+	NewApp, road.InitRoad,
 )
 
 // 绑定接口和实现类
@@ -58,7 +59,7 @@ var ProviderSet = wire.NewSet(
 	ProvideGroup,
 )
 
-// nacosClientSet 依赖
-var nacosClientSet = wire.NewSet(
-	ProvideNacosClientParam, clients.NewConfigClient,
+var DBComponents = wire.NewSet(
+	ProvideRedisClient,
+	ProvideStore,
 )

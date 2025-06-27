@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -40,7 +39,7 @@ func main() {
 
 // run 启动服务
 func run(c *cli.Context) error {
-	cacheApp, err := app.InitializeApp(fmt.Sprintf(":%d", c.Int("port")))
+	cacheApp, err := app.InitializeApp(c.Int("port"), "./config/cache.conf")
 	if err != nil {
 		return err
 	}

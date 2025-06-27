@@ -126,7 +126,7 @@ func WithTLS(certFile, keyFile string) ServerOption {
 }
 
 // NewServer 创建服务器
-func NewServer(addr, srcName string, opts ...ServerOption) (*Server, error) {
+func NewServer(addr int, srcName string, opts ...ServerOption) (*Server, error) {
 	options := DefaultServerOptions()
 	for _, o := range opts {
 		o(options)
@@ -151,7 +151,7 @@ func NewServer(addr, srcName string, opts ...ServerOption) (*Server, error) {
 		grpcServerOpts = append(grpcServerOpts, grpc.Creds(creds))
 	}
 	s := &Server{
-		addr:       addr,
+		addr:       fmt.Sprintf(":%d", addr),
 		srcName:    srcName,
 		groups:     new(sync.Map),
 		opts:       options,

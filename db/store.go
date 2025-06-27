@@ -9,18 +9,17 @@ import (
 	"gorm.io/gorm"
 )
 
-var globalDB *gorm.DB
+// Store 存储
+type Store struct {
+	db *gorm.DB
+}
 
-// InitDB 初始化数据库连接
-func InitDB() error {
+// NewStore 初始化数据库连接
+func NewStore(cfg *DBConfig) (*Store, error) {
 	var err error
-	cfg, err := NewDBConfig()
-	if err != nil {
-		return err
-	}
 	dsn := cfg.GetDSN()
 	logrus.Infof("dsn:%s", dsn)
-	globalDB, err = gorm.Open(mysql.New(mysql.Config{
+	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		DefaultStringSize:         256,   // string 类型字段的默认长度
 		DisableDatetimePrecision:  true,  // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
@@ -30,17 +29,18 @@ func InitDB() error {
 	}))
 	if err != nil {
 		logrus.Infof("db init fail,err :%v", err)
-		return err
+		return nil, err
 	}
+	ss := &Store{db: db}
 	// 自动建表
-	return globalDB.AutoMigrate(&Model{})
+	return ss, ss.db.AutoMigrate(&Model{})
 }
 
 // Get From db
-func Get(ctx context.Context, key string) ([]byte, error) {
+func (s *Store) Get(ctx context.Context, key string) ([]byte, error) {
 	logrus.Infof("Get key %s From db:", key)
 	var model Model
-	err := globalDB.WithContext(ctx).Where("`key` = ?", key).First(&model).Error
+	err := s.db.WithContext(ctx).Where("`key` = ?", key).First(&model).Error
 	if err != nil {
 		logrus.Infof("get key %s from db err:%v", key, err)
 		return nil, fmt.Errorf("get key %s from db err:%v", key, err)
@@ -49,10 +49,10 @@ func Get(ctx context.Context, key string) ([]byte, error) {
 }
 
 // Set to db
-func Set(ctx context.Context, key string, value []byte) error {
+func (s *Store) Set(ctx context.Context, key string, value []byte) error {
 	logrus.Infof("Set key %s value %s To db", key, value)
 
-	db := globalDB.WithContext(ctx)
+	db := s.db.WithContext(ctx)
 
 	var model Model
 	if err := db.Where(Model{Key: key}).Attrs(Model{Value: value}).FirstOrCreate(&model).Error; err != nil {

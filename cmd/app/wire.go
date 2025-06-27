@@ -7,13 +7,14 @@ package app
 
 import (
 	"github.com/google/wire"
-	"github.com/nacos-group/nacos-sdk-go/clients"
+	"github.com/kangyueyue/road"
 	lcache "github.com/zuozikang/cache"
 )
 
 // AppSet 依赖
 var AppSet = wire.NewSet(
 	NewApp,
+	road.InitRoad,
 )
 
 // 绑定接口和实现类
@@ -29,20 +30,19 @@ var ProviderSet = wire.NewSet(
 	ProvideGroup,
 )
 
-// nacosClientSet 依赖
-var nacosClientSet = wire.NewSet(
-	ProvideNacosClientParam,
-	clients.NewConfigClient,
+var DBComponents = wire.NewSet(
+	ProvideRedisClient,
+	ProvideStore,
 )
 
 // InitializeApp 初始化
-func InitializeApp(addr string) (*App, error) {
+func InitializeApp(addr int, f string) (*App, error) {
 	wire.Build(
 		AppSet,
 		NewConfig,
 		PickerSet,
 		ProviderSet,
-		nacosClientSet,
+		DBComponents,
 	)
 	return &App{}, nil // 返回值没有实际意义，只需符合接口即可
 }

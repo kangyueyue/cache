@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/viper"
-
 	"github.com/BurntSushi/toml"
+	"github.com/spf13/viper"
 )
 
 // DBConfig 配置

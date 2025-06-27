@@ -58,10 +58,10 @@ func WithServiceName(name string) PickerOption {
 }
 
 // NewClientPicker 创建新的ClientPicker实例
-func NewClientPicker(addr string, opts ...PickerOption) (*ClientPicker, error) {
+func NewClientPicker(addr int, opts ...PickerOption) (*ClientPicker, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	picker := &ClientPicker{
-		selfAddr:          addr,
+		selfAddr:          fmt.Sprintf("%d", addr),
 		svcName:           consts.DefaultClientName,
 		clients:           make(map[string]*Client),
 		consistentHashing: consistenthash.New(), // 一致性哈希
